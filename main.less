@@ -1,0 +1,30 @@
+@base: 10;
+
+.vAMM(@cssProperty; @rest...) {
+    
+  @props: ~`(function () {
+    var args = "@{rest}".replace(/[\[\ \]]/g, ''),
+        dimensions = {
+          px: '',
+          rem: ''
+        };    
+
+    args = args.split(',');
+
+    for(var i = 0; i < args.length; i++) {
+      if(args[i] !== ',') {
+        dimensions.px += args[i] + 'px' + (i !== (args.length - 1) ? ',' : '');
+        dimensions.rem += (args[i] / @{base}) + 'rem' + (i !== (args.length - 1) ? ',' : '');
+      }
+    }
+
+    this.dimensions = dimensions;
+
+    return('');
+
+  }())`;
+  
+  @{cssProperty}:  ~`dimensions.px`;
+  @{cssProperty}:  ~`dimensions.rem`;
+  
+}
